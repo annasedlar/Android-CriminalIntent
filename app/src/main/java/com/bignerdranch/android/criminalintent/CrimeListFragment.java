@@ -5,14 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -45,13 +42,15 @@ public class CrimeListFragment extends Fragment {
         private Crime mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
+        private TextView mSeverityTextView;
 
-        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_crime, parent, false));
+        public CrimeHolder(LayoutInflater inflater, ViewGroup parent, int layout) {
+            super(inflater.inflate(layout, parent, false));
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+            mSeverityTextView = (TextView) itemView.findViewById(R.id.crime_severity);
         }
 
         @Override
@@ -67,6 +66,10 @@ public class CrimeListFragment extends Fragment {
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+
+        private final static int CrimeListItem = 0;
+        private final static int CrimeListItemPolice = 1;
+
         private List<Crime> mCrimes;
 
         public CrimeAdapter(List<Crime> crimes){
@@ -77,10 +80,31 @@ public class CrimeListFragment extends Fragment {
         @NonNull
         @Override
         public CrimeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            int layoutRes = 0;
+            switch (viewType) {
+                case CrimeListItem:
+                    layoutRes = R.layout.list_item_crime;
+                    break;
+                case CrimeListItemPolice:
+                    layoutRes = R.layout.list_item_crime_police;
+                    break;
+            }
+
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
-            return new CrimeHolder(layoutInflater, parent);
+            return new CrimeHolder(layoutInflater, parent, layoutRes);
         }
+
+        @Override
+        public int getItemViewType(int position) {
+
+            if (position % 2 == 0 ){
+                return CrimeListItem;
+            } else {
+                return CrimeListItemPolice;
+            }
+        }
+
 
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
