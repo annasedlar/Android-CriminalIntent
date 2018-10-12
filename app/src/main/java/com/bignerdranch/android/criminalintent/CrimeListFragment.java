@@ -55,12 +55,12 @@ public class CrimeListFragment extends Fragment {
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
             mSeverityTextView = (TextView) itemView.findViewById(R.id.crime_severity);
 
-            if ( layout == 2131296286) {
+            if (layout == R.layout.list_item_crime) {
                 mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
 
             }
 
-            if ( layout == 2131296287) {
+            if (layout == R.layout.list_item_crime_police) {
                 mSolvedImageView = (ImageView) itemView.findViewById(R.id.crime_solved);
             }
         }
