@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.text.DateFormat;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mItemUpdatedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -45,7 +45,8 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(mItemUpdatedPosition);
+            mItemUpdatedPosition = RecyclerView.NO_POSITION;
         }
     }
 
@@ -78,6 +79,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+            mItemUpdatedPosition = getAdapterPosition();
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
@@ -100,7 +102,6 @@ public class CrimeListFragment extends Fragment {
         public CrimeAdapter(List<Crime> crimes){
             mCrimes = crimes;
         }
-
 
         @NonNull
         @Override
