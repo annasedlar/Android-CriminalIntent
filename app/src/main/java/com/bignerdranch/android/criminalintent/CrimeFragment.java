@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -98,6 +99,8 @@ public class CrimeFragment extends Fragment {
                     vp.setCurrentItem(0);
                 } else {
                     mJumpToFirst.setEnabled(false);
+                    Toast.makeText(getActivity(), "You are already viewing first crime",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -110,6 +113,8 @@ public class CrimeFragment extends Fragment {
                     vp.setCurrentItem(mCrimes.size() - 1);
                 } else {
                     mJumpToLast.setEnabled(false);
+                    Toast.makeText(getActivity(), "You are already viewing last crime",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
