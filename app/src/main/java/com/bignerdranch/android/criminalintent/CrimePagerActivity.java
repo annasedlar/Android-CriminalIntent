@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class CrimePagerActivity extends AppCompatActivity {
     private Button mJumpToFirst;
     private Button mJumpToLast;
 
-    public static Intent newIntent(Context packageContext, UUID crimeId){
+    public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
@@ -54,11 +55,43 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < mCrimes.size(); i++){
-            if (mCrimes.get(i).getId().equals(crimeId)){
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }
         }
+
+        mJumpToFirst = (Button) findViewById(R.id.jump_to_first_crime);
+        mJumpToFirst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mViewPager.getCurrentItem() != 0) {
+                    mViewPager.setCurrentItem(0);
+                } else {
+                    mJumpToFirst.setEnabled(false);
+                    Toast.makeText(getApplicationContext(), "You are already viewing first crime",
+                            Toast.LENGTH_LONG).show();
+                }
+                mJumpToFirst.setEnabled(true);
+            }
+        });
+
+        mJumpToLast = (Button) findViewById(R.id.jump_to_last_crime);
+        mJumpToLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mViewPager.getCurrentItem() != mCrimes.size() - 1) {
+                    mViewPager.setCurrentItem(mCrimes.size() - 1);
+                } else {
+                    mJumpToLast.setEnabled(false);
+                    Toast.makeText(getApplicationContext(), "You are already viewing last crime",
+                            Toast.LENGTH_SHORT).show();
+                }
+                mJumpToLast.setEnabled(true);
+            }
+
+        });
     }
 }

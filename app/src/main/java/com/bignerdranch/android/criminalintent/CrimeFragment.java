@@ -3,10 +3,8 @@ package com.bignerdranch.android.criminalintent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.List;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -27,9 +22,6 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
-    private List<Crime> mCrimes;
-    private Button mJumpToFirst;
-    private Button mJumpToLast;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -43,8 +35,6 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mCrime = new Crime();
-//        UUID crimeId = (UUID) getActivity().getIntent().getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.getCrimeLab(getActivity()).getCrime(crimeId);
     }
@@ -83,39 +73,6 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
-            }
-        });
-
-
-        final ViewPager vp = (ViewPager) getActivity().findViewById(R.id.crime_view_pager);
-        mCrimes = CrimeLab.getCrimeLab(getActivity()).getCrimes();
-
-        mJumpToFirst = (Button) v.findViewById(R.id.jump_to_first_crime);
-        mJumpToFirst.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(vp.getCurrentItem() != 0){
-                    vp.setCurrentItem(0);
-                } else {
-                    mJumpToFirst.setEnabled(false);
-                    Toast.makeText(getActivity(), "You are already viewing first crime",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        mJumpToLast = (Button) v.findViewById(R.id.jump_to_last_crime);
-        mJumpToLast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(vp.getCurrentItem() != (mCrimes.size() - 1) ) {
-                    vp.setCurrentItem(mCrimes.size() - 1);
-                } else {
-                    mJumpToLast.setEnabled(false);
-                    Toast.makeText(getActivity(), "You are already viewing last crime",
-                            Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
