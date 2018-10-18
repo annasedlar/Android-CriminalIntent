@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,11 +25,36 @@ public class CrimePagerActivity extends AppCompatActivity {
     private List<Crime> mCrimes;
     private Button mJumpToFirst;
     private Button mJumpToLast;
+//    private UUID mCrimeId;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.fragment_crime_detail, menu);
+//        MenuItem subtitleItem = menu.findItem(R.id.delete_crime);
+        return true;
+    }
+
+    //
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+
+        switch (item.getItemId()) {
+            case R.id.delete_crime:
+                CrimeLab.getCrimeLab(this).deleteCrime(crimeId);
+                Intent intent = CrimePagerActivity.newIntent(this, crimeId);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
