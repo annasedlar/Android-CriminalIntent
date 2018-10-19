@@ -25,7 +25,6 @@ public class CrimePagerActivity extends AppCompatActivity {
     private List<Crime> mCrimes;
     private Button mJumpToFirst;
     private Button mJumpToLast;
-//    private UUID mCrimeId;
 
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
@@ -37,7 +36,6 @@ public class CrimePagerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.fragment_crime_detail, menu);
-//        MenuItem subtitleItem = menu.findItem(R.id.delete_crime);
         return true;
     }
 
@@ -50,9 +48,11 @@ public class CrimePagerActivity extends AppCompatActivity {
             case R.id.delete_crime:
                 CrimeLab.getCrimeLab(this).deleteCrime(crimeId);
                 Intent intent = CrimePagerActivity.newIntent(this, crimeId);
-                startActivity(intent);
+//                startActivity(intent);
+                    this.finish();
                 return true;
             default:
+//                this runs on the back menu button
                 return super.onOptionsItemSelected(item);
         }
     }
